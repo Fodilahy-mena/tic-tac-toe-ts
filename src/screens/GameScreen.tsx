@@ -30,7 +30,7 @@ export default function GameScreen() {
       <div>
           {winner ? <Label text={`${winner.name ? winner.name : winner.mark} won!`}/>
           : 
-          <Label text={`${endGame === '' ? (`${nextPlayer.name ? nextPlayer.name : nextPlayer.mark}'s turn`) : endGame == "draw" ? 'Draw!' : ''}`}/>}
+          <Label text={`${endGame === '' ? (`${nextPlayer.name ? nextPlayer.name : nextPlayer.mark}'s turn`) : endGame === "draw" ? 'Draw!' : ''}`}/>}
           <Board ticTacBoard={ticTacGrid} handleClick={handleClick}/>
           {isDraw || winner ?
           <LinkNavigator label="Restart" url="/"/> : ""}

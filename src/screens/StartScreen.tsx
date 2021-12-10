@@ -24,7 +24,7 @@ export default function StartScreen() {
     useEffect(() => {
         if(winner) {
             dispatch({type: 'update-end-game', payload: 'won'});
-            dispatch({type: 'increment-player-score', payload: winner.mark == 'O' ? 0 : winner.mark == 'X' ? 1 : 0});
+            dispatch({type: 'increment-player-score', payload: winner.mark === 'O' ? 0 : winner.mark === 'X' ? 1 : 0});
         }
     }, [winner])
     

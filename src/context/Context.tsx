@@ -1,4 +1,3 @@
-import { stat } from 'fs';
 import {createContext, useReducer, useEffect} from 'react';
 
 type PlayerType = {
@@ -70,9 +69,7 @@ function reducer(state: any, action: Action) {
             return { 
                 ...state,
                 ticTacGrid: action.payload,
-                isDraw: state.ticTacGrid.every((item: string) => {
-                    return item.length === 1;
-                })}
+            }
         }
         case 'toogle-restart': {
             return { 
