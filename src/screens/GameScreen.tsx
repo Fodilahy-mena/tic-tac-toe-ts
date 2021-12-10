@@ -13,7 +13,7 @@ export default function GameScreen() {
   }, [])
 
   // check draw
-  const isDraw = ticTacGrid.every((item: string) => {
+  const isDraw: boolean = ticTacGrid.every((item: string) => {
     return item.length === 1;
   });
 

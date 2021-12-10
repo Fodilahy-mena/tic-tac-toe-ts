@@ -12,9 +12,9 @@ interface BoardProps {
 
 const Board: React.FC<BoardProps>  = ({ticTacBoard, handleClick}) => {
     return (
-        <BoardStyled data-cy="player-board">
+        <BoardStyled data-cy="game-board">
             {ticTacBoard.map((item, index) => 
-                <BoxField key={index} onClick={() => handleClick(index)}>
+                <BoxField data-cy={`square-${index}`} key={index} onClick={() => handleClick(index)}>
                     {item === 'X' ?
                     <Icon icon={cross}/>
                     : item === 'O' ?

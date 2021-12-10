@@ -1,4 +1,5 @@
 import {createContext, useReducer, useEffect} from 'react';
+import {winningPatterns} from './utility';
 
 type PlayerType = {
     name: string 
@@ -48,7 +49,7 @@ type Action =
 
 export const Context = createContext(initialValues);
 
-function reducer(state: any, action: Action) {
+function reducer(state: StateType, action: Action) {
     switch (action.type) {
         case 'reset-players': {
             return {
@@ -131,17 +132,8 @@ function reducer(state: any, action: Action) {
 
 export const ContextProvider: React.FC = ({children}) => {
     const [state, dispatch] = useReducer(reducer, initialValues);
-    function detectWinner(grid: string[]) {
-        const winningPatterns: number[][] = [
-            [0, 1, 2], // h1
-            [3, 4, 5], // h2
-            [6, 7, 8], // h3
-            [0, 3, 6], // v1
-            [1, 4, 7], // v2
-            [2, 5, 8], // v3
-            [0, 4, 8], // d1
-            [2, 4, 6], // d2
-        ];
+
+    function detectWinner(grid: string[]): string | null {
         for (let i = 0; i < winningPatterns.length; i++) {
             const [a, b, c] = winningPatterns[i];
             if (grid[a] && grid[a] === grid[b] && grid[a] === grid[c]) {
@@ -150,69 +142,66 @@ export const ContextProvider: React.FC = ({children}) => {
         }
         return null;
     }
-    const winnerMark = detectWinner(state.ticTacGrid);
-    const playerWon = state.players.find((player: {name: string, mark: string, score: number, id: string}) => player.mark === winnerMark);
+    const winnerMark: string | null = detectWinner(state.ticTacGrid);
+    const playerWon: PlayerType | undefined = state.players.find((player: {name: string, mark: string, score: number, id: string}) => player.mark === winnerMark);
     
     useEffect(() => {
         if(playerWon) {
             dispatch({type: 'update-winner', payload: playerWon});
         }
     }, [playerWon])
-    
-    function handleClick(index: number) {
-        const ticTacGridCopy = [...state.ticTacGrid];
-        if (winnerMark || ticTacGridCopy[index]) return;
-        ticTacGridCopy[index] = state.nextPlayer.mark;
+
+    function actionAfterOneMove(ticTacGridCopy: string[]) {
         dispatch({type: 'update-tic-tac-grid', payload: ticTacGridCopy});
         dispatch({type: 'toggle-fill-square'});
         dispatch({type: 'update-next-player', payload: state.nextPlayer.mark === state.players[0].mark ? state.players[1] : state.nextPlayer.mark === state.players[1].mark ? state.players[0] : state.nextPlayer});
+    }
+    
+    function handleClick(index: number): void {
+        const ticTacGridCopy = [...state.ticTacGrid];
+        if (winnerMark || ticTacGridCopy[index]) return;
+        // insert the player's mark (O or X) to the ticTacGridCopy item that
+        // has the same index as the selected square from the board
+        ticTacGridCopy[index] = state.nextPlayer.mark;
+        actionAfterOneMove(ticTacGridCopy)
     };
 
     function makeAiMove(grid: string[], mark: string) {
-        const lines = [
-            [0, 1, 2],
-            [3, 4, 5],
-            [6, 7, 8],
-            [0, 3, 6],
-            [1, 4, 7],
-            [2, 5, 8],
-            [0, 4, 8],
-            [2, 4, 6],
-        ];
         if(state.winner == null) {
-        for (let i = 0; i < lines.length; i++) {
-            const [a, b, c] = lines[i];
+        for (let i: number = 0; i < winningPatterns.length; i++) {
+            const [a, b, c]: number[] = winningPatterns[i];
+            
             if(grid[4].length !== 1) {
-              const ticTacGridCopy = [...grid];
+              const ticTacGridCopy: string[] = [...grid];
               if (winnerMark || ticTacGridCopy[4]) return;
+              // insert the AI's mark (O or X) to the ticTacGridCopy index that
+              // is preferable and empty
               ticTacGridCopy[4] = mark;
-              dispatch({type: 'update-tic-tac-grid', payload: ticTacGridCopy});
-              dispatch({type: 'toggle-fill-square'});
-              dispatch({type: 'update-next-player', payload: state.nextPlayer.mark === state.players[0].mark ? state.players[1] : state.nextPlayer.mark === state.players[1].mark ? state.players[0] : state.nextPlayer});
+              actionAfterOneMove(ticTacGridCopy)
               
             } else if(grid[a].length !== 1 && (grid[b] !== mark)) {
-              
               const ticTacGridCopy = [...grid];
               if (winnerMark || ticTacGridCopy[a]) return;
+              // insert the AI's mark (O or X) to the ticTacGridCopy index that
+              // is preferable and empty
               ticTacGridCopy[a] = mark;
-              dispatch({type: 'update-tic-tac-grid', payload: ticTacGridCopy});
-              dispatch({type: 'toggle-fill-square'});
-              dispatch({type: 'update-next-player', payload: state.nextPlayer.mark === state.players[0].mark ? state.players[1] : state.nextPlayer.mark === state.players[1].mark ? state.players[0] : state.nextPlayer});
+              actionAfterOneMove(ticTacGridCopy)
               
             } else if(grid[b].length !== 1 && (grid[a] !== mark)) {
+                
                 const ticTacGridCopy = [...grid];
                 if (winnerMark || ticTacGridCopy[b]) return;
+                // insert the AI's mark (O or X) to the ticTacGridCopy index that
+                // is preferable and empty
                 ticTacGridCopy[b] = state.nextPlayer.mark;
-                dispatch({type: 'update-tic-tac-grid', payload: ticTacGridCopy});
-                dispatch({type: 'toggle-fill-square'});
-                dispatch({type: 'update-next-player', payload: state.nextPlayer.mark === state.players[0].mark ? state.players[1] : state.nextPlayer.mark === state.players[1].mark ? state.players[0] : state.nextPlayer});
+                actionAfterOneMove(ticTacGridCopy)
             } else if(grid[c].length !== 1 && (grid[b] !== mark)) {
                 const ticTacGridCopy = [...grid];
                 if (winnerMark || ticTacGridCopy[c]) return;
+                // insert the AI's mark (O or X) to the ticTacGridCopy index that
+                // is preferable and empty
                 ticTacGridCopy[c] = state.nextPlayer.mark;
-                dispatch({type: 'update-tic-tac-grid', payload: ticTacGridCopy});
-                dispatch({type: 'toggle-fill-square'});
-                dispatch({type: 'update-next-player', payload: state.nextPlayer.mark === state.players[0].mark ? state.players[1] : state.nextPlayer.mark === state.players[1].mark ? state.players[0] : state.nextPlayer});
+                actionAfterOneMove(ticTacGridCopy)
             }
             
           }

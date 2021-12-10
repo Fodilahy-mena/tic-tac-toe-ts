@@ -21,5 +21,23 @@ describe('User should see StartScreen', () => {
     it("Clicking on Start link should redirect to playground page (GamePage)", () => {
         cy.get("[data-cy=button-link").click();
         cy.location('pathname').should('eq', '/playground');
+        // Shoud contain GameBoard
+        cy.get("[data-cy=game-board]").should('be.visible')
     })
+})
+
+
+describe("User should be able to choose AI option", () => {
+    beforeEach(() => {
+        cy.visit('http://localhost:3000');
+    })
+
+    it("User can enter his name and play against AI after clicking on Start", () => {
+        cy.get("[data-cy=first-player-input]").type('Rabit');
+        cy.get("[data-cy=button-link").click();
+        cy.location('pathname').should('eq', '/playground');
+    })
+    
+    
+
 })

@@ -11,7 +11,7 @@ export default function StartScreen() {
     const [firstPlayerName, setFirstPlayerName] = useState('');
     const [secondPlayerName, setSecondPlayerName] = useState('')
     
-    function toggleBetweenGameType() {
+    function toggleBetweenGameType(): void {
         if(players.every(item => item.name.length === 0) || players.every(item => item.name.length > 0)) {
             // Human vs Human
             dispatch({type: 'update-game-type', payload: 0});
@@ -34,7 +34,7 @@ export default function StartScreen() {
         dispatch({type: 'update-end-game', payload: ''});
     }, []);
 
-    function reboot() {
+    function reboot(): void {
         dispatch({type: 'reset-players'});
         dispatch({type: 'toogle-restart', payload: false})
     }
