@@ -42,6 +42,7 @@ export default function StartScreen() {
     useEffect(() => {
         toggleBetweenGameType()
     }, [firstPlayerName, secondPlayerName])
+
     return (
         <Container>
             <Form>
@@ -50,7 +51,7 @@ export default function StartScreen() {
                     {isRestart && 
                     <Score>{players[0].score}-</Score>
                     }
-                    <InputStyled value={players[0].name} onChange={(e) => {
+                    <InputStyled data-cy='first-player-input' value={players[0].name} onChange={(e) => {
                         setFirstPlayerName(e.target.value)
                         let capitalizedName = e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
                         dispatch({type: 'update-first-player-name', payload: capitalizedName});
@@ -62,14 +63,14 @@ export default function StartScreen() {
                     {isRestart && 
                     <Score>{players[1].score}-</Score>
                     }
-                    <InputStyled value={players[1].name} onChange={(e) => {
+                    <InputStyled data-cy='second-player-input' value={players[1].name} onChange={(e) => {
                         setSecondPlayerName(e.target.value)
                         let capitalizedName = e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
                         dispatch({type: 'update-second-player-name', payload: capitalizedName});
                     }} autoComplete="off" type="text" name="username" placeholder="leave empty to use AI or enter player name"/>
                 </InputContainer>
             </Form>
-            <Buttons>
+            <Buttons data-cy="button-container">
                 <LinkNavigator url="/playground" label={isRestart ? "Play again" : "Start"}/>
                 {isRestart && <LinkNavigator onClick={reboot} url="/" label="Reboot"/>}
             </Buttons>

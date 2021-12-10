@@ -5,7 +5,7 @@ interface LabelProps {
 }
 const Label: React.FC<LabelProps>  = ({text}) => {
     return (
-        <LabelStyled>{text}</LabelStyled>
+        <LabelStyled data-cy="game-satatus">{text}</LabelStyled>
     )
 }
 

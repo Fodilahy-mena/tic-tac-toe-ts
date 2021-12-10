@@ -132,18 +132,18 @@ function reducer(state: any, action: Action) {
 export const ContextProvider: React.FC = ({children}) => {
     const [state, dispatch] = useReducer(reducer, initialValues);
     function detectWinner(grid: string[]) {
-        const winingPatterns = [
-            [0, 1, 2],
-            [3, 4, 5],
-            [6, 7, 8],
-            [0, 3, 6],
-            [1, 4, 7],
-            [2, 5, 8],
-            [0, 4, 8],
-            [2, 4, 6],
+        const winningPatterns: number[][] = [
+            [0, 1, 2], // h1
+            [3, 4, 5], // h2
+            [6, 7, 8], // h3
+            [0, 3, 6], // v1
+            [1, 4, 7], // v2
+            [2, 5, 8], // v3
+            [0, 4, 8], // d1
+            [2, 4, 6], // d2
         ];
-        for (let i = 0; i < winingPatterns.length; i++) {
-            const [a, b, c] = winingPatterns[i];
+        for (let i = 0; i < winningPatterns.length; i++) {
+            const [a, b, c] = winningPatterns[i];
             if (grid[a] && grid[a] === grid[b] && grid[a] === grid[c]) {
             return grid[a];
         }
@@ -152,7 +152,7 @@ export const ContextProvider: React.FC = ({children}) => {
     }
     const winnerMark = detectWinner(state.ticTacGrid);
     const playerWon = state.players.find((player: {name: string, mark: string, score: number, id: string}) => player.mark === winnerMark);
-
+    
     useEffect(() => {
         if(playerWon) {
             dispatch({type: 'update-winner', payload: playerWon});
@@ -227,7 +227,6 @@ export const ContextProvider: React.FC = ({children}) => {
       },[state.fillSquare]);
       
       useEffect(() => {
-        dispatch({type: 'toogle-restart', payload: true});
         // random player to start
         dispatch({type: 'update-next-player', payload: state.players[Math.floor(Math.random() * state.players.length)]});
       }, []);

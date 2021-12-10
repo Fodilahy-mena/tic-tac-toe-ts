@@ -12,7 +12,7 @@ interface BoardProps {
 
 const Board: React.FC<BoardProps>  = ({ticTacBoard, handleClick}) => {
     return (
-        <BoardStyled>
+        <BoardStyled data-cy="player-board">
             {ticTacBoard.map((item, index) => 
                 <BoxField key={index} onClick={() => handleClick(index)}>
                     {item === 'X' ?

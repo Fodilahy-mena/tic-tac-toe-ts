@@ -4,7 +4,7 @@ interface IconProps {
 }
 const Icon: React.FC<IconProps> = ({icon}) => {
     return (
-    <IconStyled src={icon} alt="user's mark"/>
+    <IconStyled data-cy="icon" src={icon} alt="user's mark"/>
     )
 }
 const IconStyled = styled.img`

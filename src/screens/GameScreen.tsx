@@ -9,6 +9,7 @@ export default function GameScreen() {
   
   useEffect(() => {
     dispatch({type: 'update-winner', payload: null})
+    dispatch({type: 'toogle-restart', payload: true});
   }, [])
 
   // check draw

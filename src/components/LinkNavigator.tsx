@@ -9,7 +9,7 @@ interface LinkProps {
 }
 const LinkNavigator: React.FC<LinkProps> = ({label, url, onClick}) => {
     return (
-        <LinkStyled to={url} onClick={onClick ? onClick : () => {}}>
+        <LinkStyled data-cy="button-link" to={url} onClick={onClick ? onClick : () => {}}>
             {label}
         </LinkStyled>
     )

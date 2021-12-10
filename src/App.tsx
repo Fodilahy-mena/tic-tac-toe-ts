@@ -9,7 +9,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <Heading>Tic tac toe</Heading>
+        <Heading data-cy="title">Tic tac toe</Heading>
       </header>
       <Main>
         <Router>
