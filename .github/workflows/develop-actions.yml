@@ -25,7 +25,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: yarn install
-    - run: yarn start
     - run: yarn run test
+    - run: yarn start
     - run: yarn run cypress:ci
     - run: yarn run build
