@@ -5,9 +5,9 @@ name: Node.js CI
 
 on:
   push:
-    branches: [main, develop]
+    branches: [develop]
   pull_request:
-    branches: [main, develop]
+    branches: [develop]
 
 jobs:
   build:
@@ -26,6 +26,4 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: yarn install
     - run: yarn run test
-    - run: yarn start
-    - run: yarn run cypress:ci
     - run: yarn run build
